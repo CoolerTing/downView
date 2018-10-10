@@ -5,4 +5,7 @@
 PS：由于采用masonry布局，请保证项目中有masonry。
 ## 使用
 
+```objective-c
+#import "downView.h"
+```
 遵循```downViewDelegate```
