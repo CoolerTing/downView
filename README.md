@@ -14,3 +14,8 @@ PS：由于采用masonry布局，请保证项目中有masonry。
 downView *view = [downView initWithPoint:point superView:self.view titleArray:@[@"测试1",@"测试2",@"测试3"] imageArray:nil];
 view.delegate = self;
 ```
+### 参数
+* point：点击的坐标或者某个控件的中心点坐标
+* superView：downView的父视图
+* titleArray：downView每一行的标题（不可以为空）
+* imageArray：downView每一样的图标（可以为空）
