@@ -3,3 +3,6 @@
 ## 安装
 只需要将downView.h和downView.m文件拖入项目中并引用。</br>
 PS：由于采用masonry布局，请保证项目中有masonry。
+## 使用
+
+遵循```downViewDelegate```
