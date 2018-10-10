@@ -3,6 +3,11 @@
 ## 安装
 只需要将downView.h和downView.m文件拖入项目中并引用。</br>
 PS：由于采用masonry布局，请保证项目中有masonry。
+## 说明
+项目中需要该功能，于是自己动手做了一个。
+类似微信的右上角下拉菜单，自动识别方向，简单易用。
+带有缩放动画，更美观。
+点击视图空白处可收回视图。
 ## 使用
 
 ```objective-c
@@ -15,6 +20,8 @@ downView *view = [downView initWithPoint:point superView:self.view titleArray:@[
 view.delegate = self;
 ```
 #### delegate
+点击每一行的回调
+
 ```objective-c
 - (void)downView:(downView *)downView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
