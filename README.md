@@ -11,6 +11,8 @@ PS：由于采用masonry布局，请保证项目中有masonry。
 带有缩放动画，更美观。
 
 点击视图空白处可收回视图。
+
+可根据需求修改代码。
 ## 示例
 ![downView](https://github.com/CoolerTing/downView/blob/master/downView.gif)
 ## 使用
