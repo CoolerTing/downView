@@ -8,4 +8,9 @@ PS：由于采用masonry布局，请保证项目中有masonry。
 ```objective-c
 #import "downView.h"
 ```
-遵循```downViewDelegate```
+并遵循```downViewDelegate```
+在点击事件中创建对象并设置代理
+```objective-c
+downView *view = [downView initWithPoint:point superView:self.view titleArray:@[@"测试1",@"测试2",@"测试3"] imageArray:nil];
+view.delegate = self;
+```
