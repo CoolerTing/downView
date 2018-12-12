@@ -10,26 +10,63 @@
 #import "Masonry.h"
 
 @interface downView()<UITableViewDelegate,UITableViewDataSource>
+/**
+ 弹出坐标点
+ */
 @property (nonatomic, assign) CGPoint point;
+/**
+ 背景遮罩
+ */
 @property (nonatomic, strong) UIView *backView;
+/**
+ 标题数组
+ */
 @property (nonatomic, strong) NSArray *titleArray;
+/**
+ 图标数组
+ */
 @property (nonatomic, strong) NSArray *imageArray;
+/**
+ 是否为向上弹出   是：YES  不是：NO
+ */
 @property (nonatomic, assign) BOOL isUp;
 @end
-
+/*
+ 控件宽度
+ */
 static CGFloat width = 150;
+/*
+ 控件高度
+ */
 static CGFloat height;
+/*
+ 控件一半高度
+ */
 static CGFloat halfWidth;
+/*
+ 行高
+ */
 static CGFloat rowHeight = 40;
+/*
+ 间隔
+ */
 static CGFloat margin = 0;
+/*
+ 箭头高度
+ */
 static CGFloat arrowHeight = 10;
+/*
+ 箭头距边距最短距离
+ */
 static CGFloat arrowMargin = 5;
+/*
+ 动画时间
+ */
 static NSTimeInterval animationTime = 0.15;
 
 @implementation downView
 
-+ (instancetype)initWithPoint:(CGPoint)point superView:(UIView *)superview titleArray:(NSArray *)titleArray imageArray:(NSArray *)imageArray
-{
++ (instancetype)initWithPoint:(CGPoint)point superView:(UIView *)superview titleArray:(NSArray *)titleArray imageArray:(NSArray *)imageArray {
     downView *view = [[downView alloc]initWithPoint:point superView:superview titleArray:titleArray imageArray:imageArray];
     view.backgroundColor = UIColor.clearColor;
     [superview addSubview:view];
@@ -37,8 +74,7 @@ static NSTimeInterval animationTime = 0.15;
     return view;
 }
 
-- (instancetype)initWithPoint:(CGPoint)point superView:(UIView *)superview titleArray:(NSArray *)titleArray imageArray:(NSArray *)imageArray
-{
+- (instancetype)initWithPoint:(CGPoint)point superView:(UIView *)superview titleArray:(NSArray *)titleArray imageArray:(NSArray *)imageArray {
     self = [super init];
     if (self) {
         
@@ -65,40 +101,29 @@ static NSTimeInterval animationTime = 0.15;
                 pointY = point.y - margin - height;
                 centerY = 1;
                 _isUp = YES;
-            }
-            else
-            {
+            } else {
                 pointY = point.y + margin;
                 centerY = 0;
                 _isUp = NO;
             }
-        }
-        else
-        {
+        } else {
             pointY = point.y + margin;
             centerY = 0;
             _isUp = NO;
         }
         
         if (superview.frame.size.width > width) {
-            if (point.x < halfWidth + arrowMargin)
-            {
+            if (point.x < halfWidth + arrowMargin) {
                 self.frame = CGRectMake(arrowMargin, pointY, width, height);
                 centerX = point.x;
-            }
-            else if (point.x >= superview.frame.size.width - halfWidth - arrowMargin)
-            {
+            } else if (point.x >= superview.frame.size.width - halfWidth - arrowMargin) {
                 self.frame = CGRectMake(superview.frame.size.width - width - arrowMargin, pointY, width, height);
                 centerX = point.x - (superview.frame.size.width - width - arrowMargin);
-            }
-            else
-            {
+            } else {
                 self.frame = CGRectMake(point.x - halfWidth, pointY, width, height);
                 centerX = halfWidth;
             }
-        }
-        else
-        {
+        } else {
             self.frame = CGRectMake(point.x - halfWidth, pointY, width, height);
             centerX = halfWidth;
         }
@@ -108,9 +133,7 @@ static NSTimeInterval animationTime = 0.15;
         CGRect rect;
         if (_isUp) {
             rect = CGRectMake(0, 0, width, height - arrowHeight);
-        }
-        else
-        {
+        } else {
             rect = CGRectMake(0, arrowHeight, width, height - arrowHeight);
         }
         
@@ -128,16 +151,14 @@ static NSTimeInterval animationTime = 0.15;
     return self;
 }
 
-- (void)animationShow
-{
+- (void)animationShow {
     self.transform = CGAffineTransformMakeScale(0.01, 0.01);
     [UIView animateWithDuration:animationTime animations:^{
         self.transform = CGAffineTransformIdentity;
     }];
 }
 
-- (void)animationHide
-{
+- (void)animationHide {
     [UIView animateWithDuration:animationTime animations:^{
         self.transform = CGAffineTransformMakeScale(0.01, 0.01);
     }completion:^(BOOL finished) {
@@ -146,35 +167,29 @@ static NSTimeInterval animationTime = 0.15;
     }];
 }
 
-- (void)setAnchorPoint:(CGPoint)anchorpoint
-{
+- (void)setAnchorPoint:(CGPoint)anchorpoint {
     CGRect oldFrame = self.frame;
     self.layer.anchorPoint = anchorpoint;
     self.frame = oldFrame;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return _titleArray.count;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return rowHeight;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return 0.01;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     return 0.01;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSString *identifier = @"";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (!cell) {
@@ -197,9 +212,7 @@ static NSTimeInterval animationTime = 0.15;
             make.top.bottom.right.mas_equalTo(0);
             if (self.imageArray == nil || self.imageArray.count == 0) {
                 make.left.mas_equalTo(20);
-            }
-            else
-            {
+            } else {
                 make.left.mas_equalTo(titleImageView.mas_right).offset(10);
             }
         }];
@@ -215,34 +228,24 @@ static NSTimeInterval animationTime = 0.15;
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (_delegate && [_delegate respondsToSelector:@selector(downView:didSelectRowAtIndexPath:)]) {
         [_delegate downView:self didSelectRowAtIndexPath:indexPath];
     }
     [self animationHide];
 }
 
-- (void)drawRect:(CGRect)rect
-{
+- (void)drawRect:(CGRect)rect {
     CGFloat pointX = 0;
     if ((_point.x > halfWidth - arrowMargin) && (_point.x <= self.superview.frame.size.width - halfWidth - arrowMargin)) {
         pointX = halfWidth;
-    }
-    else if ((self.superview.frame.size.width - _point.x < halfWidth + arrowMargin) && (self.superview.frame.size.width - _point.x) >= arrowMargin * 3)
-    {
+    } else if ((self.superview.frame.size.width - _point.x < halfWidth + arrowMargin) && (self.superview.frame.size.width - _point.x) >= arrowMargin * 3) {
         pointX = width - (self.superview.frame.size.width - _point.x) + arrowMargin;
-    }
-    else if ((self.superview.frame.size.width - _point.x) < arrowMargin * 3)
-    {
+    } else if ((self.superview.frame.size.width - _point.x) < arrowMargin * 3) {
         pointX = width - arrowMargin * 2;
-    }
-    else if (_point.x < arrowMargin * 3)
-    {
+    } else if (_point.x < arrowMargin * 3) {
         pointX = arrowMargin * 2;
-    }
-    else
-    {
+    } else {
         pointX = _point.x - arrowMargin;
     }
     CGContextRef context = UIGraphicsGetCurrentContext();
@@ -254,9 +257,7 @@ static NSTimeInterval animationTime = 0.15;
         CGContextAddLineToPoint(context, 0, 0);
         CGContextAddLineToPoint(context, 0, height - arrowMargin * 2);
         CGContextAddLineToPoint(context, pointX - arrowMargin, height - arrowMargin * 2);
-    }
-    else
-    {
+    } else {
         CGContextMoveToPoint(context, pointX, 0);
         CGContextAddLineToPoint(context, pointX + arrowMargin, arrowMargin * 2);
         CGContextAddLineToPoint(context, width, arrowMargin * 2);
@@ -270,8 +271,7 @@ static NSTimeInterval animationTime = 0.15;
     CGContextFillPath(context);
 }
 
-- (void)dealloc
-{
+- (void)dealloc {
     NSLog(@"%@ dealloc",[self class]);
 }
 
