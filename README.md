@@ -2,7 +2,6 @@
 类似微信的右上角下拉菜单，自动识别方向，简单易用。
 ## 安装
 只需要将downView.h和downView.m文件拖入项目中并引用。</br>
-PS：由于采用masonry布局，请保证项目中有masonry。
 ## 说明
 项目中需要该功能，于是自己动手做了一个。
 
@@ -72,4 +71,4 @@ typedef NS_ENUM(NSUInteger, downViewType) {
 * point：点击的坐标或者某个控件的中心点坐标
 * superView：downView的父视图 (可以为空，为空时为keywindow)
 * titleArray：downView每一行的标题（不可以为空）
-* imageArray：downView每一行的图标（可以为空）
+* imageArray：downView每一行的图标（可以为空，数组个数可小于titleArray个数）
