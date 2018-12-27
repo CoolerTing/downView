@@ -35,6 +35,7 @@ view.delegate = self;
     NSLog(@"*****%ld*****",indexPath.row);
 }
 ```
+控件开始隐藏时
 ```objective-c
 - (void)beginHideDownView:(downView *)downView {
     //do something;
