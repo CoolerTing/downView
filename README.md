@@ -67,8 +67,9 @@ typedef NS_ENUM(NSUInteger, downViewType) {
 };
 ```
 
-## 参数
+## 初始化参数
 * point：点击的坐标或者某个控件的中心点坐标
 * superView：downView的父视图 (可以为空，为空时为keywindow)
+* delegate：代理
 * titleArray：downView每一行的标题（不可以为空）
 * imageArray：downView每一行的图标（可以为空，数组个数可小于titleArray个数）
