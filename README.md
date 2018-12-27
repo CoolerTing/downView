@@ -21,10 +21,9 @@ PS：由于采用masonry布局，请保证项目中有masonry。
 #import "downView.h"
 ```
 并遵循```downViewDelegate```
-在点击事件中创建对象并设置代理
+在点击事件中初始化并设置代理
 ```objective-c
-downView *view = [downView initWithPoint:point superView:self.view titleArray:@[@"测试1",@"测试2",@"测试3"] imageArray:nil];
-view.delegate = self;
+[downView initWithPoint:point superView:self.view delegate:self titleArray:@[@"测试1",@"测试2",@"测试3"] imageArray:nil];
 ```
 ### delegate
 点击每一行的回调
@@ -53,6 +52,20 @@ view.delegate = self;
 设置控件标题对齐方式
 ```objective-c
 + (void)setTextAlignment:(NSTextAlignment)alignment;
+```
+设置控件标题字体
+```objective-c
++ (void)setTextFont:(UIFont *)newfont;
+```
+设置控件样式
+```objective-c
++ (void)setDownViewType:(downViewType)newType;
+```
+```objective-c
+typedef NS_ENUM(NSUInteger, downViewType) {
+    downViewLight,//浅色背景
+    downViewDark,//深色背景
+};
 ```
 
 ## 参数
