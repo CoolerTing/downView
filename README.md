@@ -41,7 +41,7 @@ view.delegate = self;
     //do something;
 }
 ```
-###全局属性设置
+### 全局属性设置
 设置控件宽度
 ```objective-c
 + (void)setListWidth:(CGFloat)newWidth;
