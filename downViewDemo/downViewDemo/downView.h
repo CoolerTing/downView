@@ -39,6 +39,13 @@
  */
 + (void)setListWidth:(CGFloat)newWidth;
 /**
+ 设置行高
+ 在初始化前调用
+
+ @param newHeight 高度
+ */
++ (void)setRowHeight:(CGFloat)newHeight;
+/**
  设置标题对齐方式
  在初始化前调用
 

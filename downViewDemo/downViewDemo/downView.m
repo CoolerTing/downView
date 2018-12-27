@@ -74,6 +74,10 @@ static NSTextAlignment textAlignment = NSTextAlignmentLeft;
     width = newWidth;
 }
 
++ (void)setRowHeight:(CGFloat)newHeight {
+    rowHeight = newHeight;
+}
+
 + (void)setTextAlignment:(NSTextAlignment)alignment {
     textAlignment = alignment;
 }
