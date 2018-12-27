@@ -35,9 +35,27 @@ view.delegate = self;
     NSLog(@"*****%ld*****",indexPath.row);
 }
 ```
+```objective-c
+- (void)beginHideDownView:(downView *)downView {
+    //do something;
+}
+```
+###全局属性设置
+设置控件宽度
+```objective-c
++ (void)setListWidth:(CGFloat)newWidth;
+```
+设置控件行高
+```objective-c
++ (void)setRowHeight:(CGFloat)newHeight;
+```
+设置控件标题对齐方式
+```objective-c
++ (void)setTextAlignment:(NSTextAlignment)alignment;
+```
 
 ## 参数
 * point：点击的坐标或者某个控件的中心点坐标
-* superView：downView的父视图
+* superView：downView的父视图 (可以为空，为空时为keywindow)
 * titleArray：downView每一行的标题（不可以为空）
 * imageArray：downView每一行的图标（可以为空）
