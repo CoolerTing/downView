@@ -28,13 +28,13 @@
 {
     CGPoint point = [tap locationInView:self.view];
     
-    [downView setDownViewType:downViewDark];
+    [downView setDownViewType:downViewLight];
     [downView setTextFont:[UIFont systemFontOfSize:20]];
     [downView setRowHeight:45];
     [downView setListWidth:130];
     [downView setTextAlignment:NSTextAlignmentCenter];
     
-    [downView showWithPoint:point superView:self.view delegate:self titleArray:@[@"测试1",@"测试2",@"测试3"] imageArray:nil];
+    [downView showWithPoint:point superView:self.view delegate:self titleArray:@[@"测试1",@"测试2",@"测试3"] imageArray:@[@"more", @"more"]];
 }
 
 - (void)downView:(downView *)downView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

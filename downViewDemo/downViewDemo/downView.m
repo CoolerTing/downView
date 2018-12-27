@@ -7,7 +7,6 @@
 //
 
 #import "downView.h"
-#import "Masonry/Masonry.h"
 
 @interface downView()<UITableViewDelegate,UITableViewDataSource>
 /**
@@ -243,12 +242,9 @@ static downViewType type = downViewDark;
         
         UIImageView *titleImageView = [[UIImageView alloc]init];
         titleImageView.tag = 52985297;
+        titleImageView.frame = CGRectMake(0, 0, 20, 20);
+        titleImageView.center = CGPointMake(30, rowHeight / 2);
         [cell.contentView addSubview:titleImageView];
-        [titleImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_equalTo(10);
-            make.left.mas_equalTo(20);
-            make.height.width.mas_equalTo(20);
-        }];
         
         UILabel *title = [[UILabel alloc]init];
         title.tag = 183109381;
@@ -259,16 +255,12 @@ static downViewType type = downViewDark;
         }
         title.textAlignment = textAlignment;
         title.font = font;
+        if (self.imageArray == nil || self.imageArray.count == 0) {
+            title.frame = CGRectMake(20, 0, width - 40, rowHeight);
+        } else {
+            title.frame = CGRectMake(10 + CGRectGetMaxX(titleImageView.frame), 0, width - (20 + 30 + CGRectGetWidth(titleImageView.frame)), rowHeight);
+        }
         [cell.contentView addSubview:title];
-        [title mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.bottom.mas_equalTo(0);
-            make.right.mas_equalTo(-20);
-            if (self.imageArray == nil || self.imageArray.count == 0) {
-                make.left.mas_equalTo(20);
-            } else {
-                make.left.mas_equalTo(titleImageView.mas_right).offset(10);
-            }
-        }];
         
         cell.backgroundColor = UIColor.clearColor;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -277,8 +269,14 @@ static downViewType type = downViewDark;
     title.text = _titleArray[indexPath.row];
     
     if (_imageArray) {
+        UIImage *image;
+        if (indexPath.row >= _imageArray.count) {
+            image = nil;
+        } else {
+            image = [UIImage imageNamed:_imageArray[indexPath.row]];
+        }
         UIImageView *titleImageView = [cell.contentView viewWithTag:52985297];
-        titleImageView.image = [UIImage imageNamed:_imageArray[indexPath.row]];
+        titleImageView.image = image;
     }
     return cell;
 }
@@ -328,10 +326,6 @@ static downViewType type = downViewDark;
         CGContextSetFillColorWithColor(context, UIColor.whiteColor.CGColor);
     }
     CGContextFillPath(context);
-}
-
-- (void)dealloc {
-    NSLog(@"%@ dealloc",[self class]);
 }
 
 @end
