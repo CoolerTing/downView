@@ -9,7 +9,7 @@
 #import "ViewController.h"
 #import "downView.h"
 
-@interface ViewController ()<downViewDelegate>
+@interface ViewController ()<downViewDelegate, UIGestureRecognizerDelegate>
 
 @end
 
@@ -18,25 +18,36 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    self.view.backgroundColor = UIColor.orangeColor;
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(click:)];
+    tap.delegate = self;
     [self.view addGestureRecognizer:tap];
 }
 
 - (void)click:(UITapGestureRecognizer *)tap
 {
     CGPoint point = [tap locationInView:self.view];
-    downView *view = [downView initWithPoint:point superView:self.view titleArray:@[@"测试1",@"测试2",@"测试3"] imageArray:nil];
-    view.delegate = self;
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    
+    [downView setDownViewType:downViewDark];
+    [downView setTextFont:[UIFont systemFontOfSize:20]];
+    [downView setRowHeight:45];
+    [downView setListWidth:130];
+    [downView setTextAlignment:NSTextAlignmentCenter];
+    
+    [downView showWithPoint:point superView:self.view delegate:self titleArray:@[@"测试1",@"测试2",@"测试3"] imageArray:nil];
 }
 
 - (void)downView:(downView *)downView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSLog(@"*****%ld*****",indexPath.row);
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    //防止手势冲突
+    if (touch.view == self.view) {
+        return YES;
+    }
+    return NO;
 }
 
 

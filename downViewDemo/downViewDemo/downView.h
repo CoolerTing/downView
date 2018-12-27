@@ -10,6 +10,7 @@
 
 @class downView;
 @protocol downViewDelegate <NSObject>
+@optional
 /**
  点击某一行回调
 
@@ -24,6 +25,11 @@
  */
 - (void)beginHideDownView:(downView *)downView;
 @end
+
+typedef NS_ENUM(NSUInteger, downViewType) {
+    downViewLight,
+    downViewDark,
+};
 
 @interface downView : UIView
 /**
@@ -53,6 +59,20 @@
  */
 + (void)setTextAlignment:(NSTextAlignment)alignment;
 /**
+ 设置标题字体
+ 在初始化前调用
+
+ @param newfont 字体
+ */
++ (void)setTextFont:(UIFont *)newfont;
+/**
+ 设置控件样式
+ 在初始化前调用
+
+ @param newType 样式
+ */
++ (void)setDownViewType:(downViewType)newType;
+/**
  控件初始化方法
 
  @param point 弹出坐标点
@@ -61,5 +81,5 @@
  @param imageArray 图标数组
  @return downView
  */
-+ (instancetype)initWithPoint:(CGPoint)point superView:(nullable UIView *)superview titleArray:(nonnull NSArray *)titleArray imageArray:(nullable NSArray *)imageArray;
++ (instancetype)showWithPoint:(CGPoint)point superView:(nullable UIView *)superview delegate:(id)controller titleArray:(nonnull NSArray *)titleArray imageArray:(nullable NSArray *)imageArray;
 @end

@@ -67,6 +67,14 @@ static NSTimeInterval animationTime = 0.15;
  标题对齐方式
  */
 static NSTextAlignment textAlignment = NSTextAlignmentLeft;
+/*
+ 标题字体
+ */
+static UIFont *font;
+/*
+ 控件样式
+ */
+static downViewType type = downViewDark;
 
 @implementation downView
 
@@ -82,12 +90,21 @@ static NSTextAlignment textAlignment = NSTextAlignmentLeft;
     textAlignment = alignment;
 }
 
-+ (instancetype)initWithPoint:(CGPoint)point superView:(UIView *)superview titleArray:(NSArray *)titleArray imageArray:(NSArray *)imageArray {
++ (void)setTextFont:(UIFont *)newfont {
+    font = newfont;
+}
+
++ (void)setDownViewType:(downViewType)newType {
+    type = newType;
+}
+
++ (instancetype)showWithPoint:(CGPoint)point superView:(UIView *)superview delegate:(id)controller titleArray:(NSArray *)titleArray imageArray:(NSArray *)imageArray {
     if (superview == nil) {
         superview = UIApplication.sharedApplication.delegate.window;
     }
     downView *view = [[downView alloc]initWithPoint:point superView:superview titleArray:titleArray imageArray:imageArray];
     view.backgroundColor = UIColor.clearColor;
+    view.delegate = controller;
     [superview addSubview:view];
     [view animationShow];
     return view;
@@ -102,6 +119,7 @@ static NSTextAlignment textAlignment = NSTextAlignmentLeft;
         _point = point;
         _titleArray = titleArray;
         _imageArray = imageArray;
+        font = font ? : [UIFont systemFontOfSize:UIFont.systemFontSize];
         
         UIView *backView = [[UIView alloc]init];
         backView.frame = superview.bounds;
@@ -163,7 +181,13 @@ static NSTextAlignment textAlignment = NSTextAlignmentLeft;
         tableView.estimatedSectionHeaderHeight = 0;
         tableView.estimatedSectionFooterHeight = 0;
         tableView.bounces = NO;
-        tableView.backgroundColor = [UIColor colorWithWhite:0.3 alpha:1];
+        if (type == downViewDark) {
+            tableView.backgroundColor = [UIColor colorWithWhite:0.3 alpha:1];
+            tableView.separatorColor = UIColor.whiteColor;
+        } else {
+            tableView.backgroundColor = UIColor.whiteColor;
+            tableView.separatorColor = [UIColor colorWithWhite:0.3 alpha:1];
+        }
         tableView.separatorInset = UIEdgeInsetsMake(0, 20, 0, 20);
         [self addSubview:tableView];
     }
@@ -228,10 +252,17 @@ static NSTextAlignment textAlignment = NSTextAlignmentLeft;
         
         UILabel *title = [[UILabel alloc]init];
         title.tag = 183109381;
-        title.textColor = UIColor.whiteColor;
+        if (type == downViewDark) {
+            title.textColor = UIColor.whiteColor;
+        } else {
+            title.textColor = [UIColor colorWithWhite:0.3 alpha:1];
+        }
+        title.textAlignment = textAlignment;
+        title.font = font;
         [cell.contentView addSubview:title];
         [title mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.bottom.right.mas_equalTo(0);
+            make.top.bottom.mas_equalTo(0);
+            make.right.mas_equalTo(-20);
             if (self.imageArray == nil || self.imageArray.count == 0) {
                 make.left.mas_equalTo(20);
             } else {
@@ -291,7 +322,11 @@ static NSTextAlignment textAlignment = NSTextAlignmentLeft;
         CGContextAddLineToPoint(context, pointX - arrowMargin, arrowMargin * 2);
     }
     CGContextClosePath(context);
-    CGContextSetFillColorWithColor(context, [UIColor colorWithWhite:0.3 alpha:1].CGColor);
+    if (type == downViewDark) {
+        CGContextSetFillColorWithColor(context, [UIColor colorWithWhite:0.3 alpha:1].CGColor);
+    } else {
+        CGContextSetFillColorWithColor(context, UIColor.whiteColor.CGColor);
+    }
     CGContextFillPath(context);
 }
 
