@@ -23,7 +23,7 @@ PS：由于采用masonry布局，请保证项目中有masonry。
 并遵循```downViewDelegate```
 在点击事件中初始化并设置代理
 ```objective-c
-[downView initWithPoint:point superView:self.view delegate:self titleArray:@[@"测试1",@"测试2",@"测试3"] imageArray:nil];
+[downView showWithPoint:point superView:self.view delegate:self titleArray:@[@"测试1",@"测试2",@"测试3"] imageArray:nil];
 ```
 ### delegate
 点击每一行的回调
