@@ -79,6 +79,9 @@ static NSTextAlignment textAlignment = NSTextAlignmentLeft;
 }
 
 + (instancetype)initWithPoint:(CGPoint)point superView:(UIView *)superview titleArray:(NSArray *)titleArray imageArray:(NSArray *)imageArray {
+    if (superview == nil) {
+        superview = UIApplication.sharedApplication.delegate.window;
+    }
     downView *view = [[downView alloc]initWithPoint:point superView:superview titleArray:titleArray imageArray:imageArray];
     view.backgroundColor = UIColor.clearColor;
     [superview addSubview:view];
