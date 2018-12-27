@@ -7,7 +7,7 @@
 //
 
 #import "downView.h"
-#import "Masonry.h"
+#import "Masonry/Masonry.h"
 
 @interface downView()<UITableViewDelegate,UITableViewDataSource>
 /**
@@ -63,8 +63,20 @@ static CGFloat arrowMargin = 5;
  动画时间
  */
 static NSTimeInterval animationTime = 0.15;
+/*
+ 标题对齐方式
+ */
+static NSTextAlignment textAlignment = NSTextAlignmentLeft;
 
 @implementation downView
+
++ (void)setListWidth:(CGFloat)newWidth {
+    width = newWidth;
+}
+
++ (void)setTextAlignment:(NSTextAlignment)alignment {
+    textAlignment = alignment;
+}
 
 + (instancetype)initWithPoint:(CGPoint)point superView:(UIView *)superview titleArray:(NSArray *)titleArray imageArray:(NSArray *)imageArray {
     downView *view = [[downView alloc]initWithPoint:point superView:superview titleArray:titleArray imageArray:imageArray];
@@ -159,6 +171,9 @@ static NSTimeInterval animationTime = 0.15;
 }
 
 - (void)animationHide {
+    if ([_delegate respondsToSelector:@selector(beginHideDownView:)]) {
+        [_delegate beginHideDownView:self];
+    }
     [UIView animateWithDuration:animationTime animations:^{
         self.transform = CGAffineTransformMakeScale(0.01, 0.01);
     }completion:^(BOOL finished) {
@@ -223,8 +238,10 @@ static NSTimeInterval animationTime = 0.15;
     UILabel *title = [cell.contentView viewWithTag:183109381];
     title.text = _titleArray[indexPath.row];
     
-    UIImageView *titleImageView = [cell.contentView viewWithTag:52985297];
-    titleImageView.image = [UIImage imageNamed:_imageArray[indexPath.row]];
+    if (_imageArray) {
+        UIImageView *titleImageView = [cell.contentView viewWithTag:52985297];
+        titleImageView.image = [UIImage imageNamed:_imageArray[indexPath.row]];
+    }
     return cell;
 }
 

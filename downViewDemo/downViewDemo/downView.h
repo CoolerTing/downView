@@ -17,6 +17,12 @@
  @param indexPath indexPath
  */
 - (void)downView:(downView *)downView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
+/**
+ 控件开始隐藏
+
+ @param downView downView
+ */
+- (void)beginHideDownView:(downView *)downView;
 @end
 
 @interface downView : UIView
@@ -25,6 +31,20 @@
  */
 @property (nonatomic, weak) id<downViewDelegate> delegate;
 
+/**
+ 设置控件宽度
+ 在初始化前调用
+
+ @param newWidth 宽度
+ */
++ (void)setListWidth:(CGFloat)newWidth;
+/**
+ 设置标题对齐方式
+ 在初始化前调用
+
+ @param alignment 对齐方式
+ */
++ (void)setTextAlignment:(NSTextAlignment)alignment;
 /**
  控件初始化方法
 
