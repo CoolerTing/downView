@@ -35,6 +35,10 @@
  */
 static CGFloat width = 150;
 /*
+ 角度半径
+ */
+static CGFloat cornerRadius = 5;
+/*
  控件高度
  */
 static CGFloat height;
@@ -114,7 +118,7 @@ static downViewType type = downViewDark;
     if (self) {
         
         halfWidth = width / 2.0;
-        height = rowHeight * titleArray.count + arrowHeight;
+        height = rowHeight * titleArray.count + arrowHeight + cornerRadius * 2;
         _point = point;
         _titleArray = titleArray;
         _imageArray = imageArray;
@@ -168,12 +172,13 @@ static downViewType type = downViewDark;
         
         CGRect rect;
         if (_isUp) {
-            rect = CGRectMake(0, 0, width, height - arrowHeight);
+            rect = CGRectMake(cornerRadius, cornerRadius, width - cornerRadius * 2, height - arrowHeight - cornerRadius * 2);
         } else {
-            rect = CGRectMake(0, arrowHeight, width, height - arrowHeight);
+            rect = CGRectMake(cornerRadius, arrowHeight + cornerRadius, width - cornerRadius * 2, height - arrowHeight - cornerRadius * 2);
         }
         
         UITableView *tableView = [[UITableView alloc]initWithFrame:rect style:UITableViewStylePlain];
+        tableView.layer.cornerRadius = cornerRadius;
         tableView.delegate = self;
         tableView.dataSource = self;
         tableView.estimatedRowHeight = 0;
@@ -292,32 +297,40 @@ static downViewType type = downViewDark;
     CGFloat pointX = 0;
     if ((_point.x > halfWidth - arrowMargin) && (_point.x <= self.superview.frame.size.width - halfWidth - arrowMargin)) {
         pointX = halfWidth;
-    } else if ((self.superview.frame.size.width - _point.x < halfWidth + arrowMargin) && (self.superview.frame.size.width - _point.x) >= arrowMargin * 3) {
+    } else if ((self.superview.frame.size.width - _point.x < halfWidth + arrowMargin) && (self.superview.frame.size.width - _point.x) >= arrowMargin * 3 + cornerRadius) {
         pointX = width - (self.superview.frame.size.width - _point.x) + arrowMargin;
-    } else if ((self.superview.frame.size.width - _point.x) < arrowMargin * 3) {
-        pointX = width - arrowMargin * 2;
-    } else if (_point.x < arrowMargin * 3) {
-        pointX = arrowMargin * 2;
+    } else if ((self.superview.frame.size.width - _point.x) < arrowMargin * 3 + cornerRadius) {
+        pointX = width - arrowMargin * 2 - cornerRadius;
+    } else if (_point.x < arrowMargin * 3 + cornerRadius) {
+        pointX = arrowMargin * 2 + cornerRadius;
     } else {
         pointX = _point.x - arrowMargin;
     }
     CGContextRef context = UIGraphicsGetCurrentContext();
     if (_isUp) {
-        CGContextMoveToPoint(context, pointX, height);
-        CGContextAddLineToPoint(context, pointX + arrowMargin, height - arrowMargin * 2);
-        CGContextAddLineToPoint(context, width, height - arrowMargin * 2);
-        CGContextAddLineToPoint(context, width, 0);
-        CGContextAddLineToPoint(context, 0, 0);
-        CGContextAddLineToPoint(context, 0, height - arrowMargin * 2);
-        CGContextAddLineToPoint(context, pointX - arrowMargin, height - arrowMargin * 2);
+        CGContextMoveToPoint(context, pointX, height - cornerRadius);
+        CGContextAddLineToPoint(context, pointX + arrowMargin, height - arrowMargin * 2 - cornerRadius);
+        CGContextAddLineToPoint(context, width - cornerRadius, height - arrowMargin * 2 - cornerRadius);
+        CGContextAddArc(context, width - cornerRadius * 2, height - arrowMargin * 2 - cornerRadius * 2, cornerRadius, M_PI_2, 0, 1);
+        CGContextAddLineToPoint(context, width - cornerRadius, cornerRadius);
+        CGContextAddArc(context, width - cornerRadius * 2, cornerRadius * 2, cornerRadius, 0, -M_PI_2, 1);
+        CGContextAddLineToPoint(context, cornerRadius, cornerRadius);
+        CGContextAddArc(context, cornerRadius * 2, cornerRadius * 2, cornerRadius, -M_PI_2, M_PI, 1);
+        CGContextAddLineToPoint(context, cornerRadius, height - arrowMargin * 2 - cornerRadius * 2);
+        CGContextAddArc(context, cornerRadius * 2, height - arrowMargin * 2 - cornerRadius * 2, cornerRadius, M_PI, M_PI_2, 1);
+        CGContextAddLineToPoint(context, pointX - arrowMargin, height - arrowMargin * 2 - cornerRadius);
     } else {
-        CGContextMoveToPoint(context, pointX, 0);
-        CGContextAddLineToPoint(context, pointX + arrowMargin, arrowMargin * 2);
-        CGContextAddLineToPoint(context, width, arrowMargin * 2);
-        CGContextAddLineToPoint(context, width, height);
-        CGContextAddLineToPoint(context, 0, height);
-        CGContextAddLineToPoint(context, 0, arrowMargin * 2);
-        CGContextAddLineToPoint(context, pointX - arrowMargin, arrowMargin * 2);
+        CGContextMoveToPoint(context, pointX, cornerRadius);
+        CGContextAddLineToPoint(context, pointX + arrowMargin, arrowMargin * 2 + cornerRadius);
+        CGContextAddLineToPoint(context, width - cornerRadius * 2, arrowMargin * 2 + cornerRadius);
+        CGContextAddArc(context, width - cornerRadius * 2, arrowMargin * 2 + cornerRadius * 2, cornerRadius, -M_PI_2, 0, 0);
+        CGContextAddLineToPoint(context, width - cornerRadius, height - cornerRadius * 2);
+        CGContextAddArc(context, width - cornerRadius * 2, height - cornerRadius * 2, cornerRadius, 0, M_PI_2, 0);
+        CGContextAddLineToPoint(context, cornerRadius * 2, height - cornerRadius);
+        CGContextAddArc(context, cornerRadius * 2, height - cornerRadius * 2, cornerRadius, M_PI_2, M_PI, 0);
+        CGContextAddLineToPoint(context, cornerRadius, arrowMargin * 2 + cornerRadius * 2);
+        CGContextAddArc(context, cornerRadius * 2, arrowMargin * 2 + cornerRadius * 2, cornerRadius, M_PI, M_PI * 3 / 2, 0);
+        CGContextAddLineToPoint(context, pointX - arrowMargin, arrowMargin * 2 + cornerRadius);
     }
     CGContextClosePath(context);
     if (type == downViewDark) {
@@ -325,6 +338,7 @@ static downViewType type = downViewDark;
     } else {
         CGContextSetFillColorWithColor(context, UIColor.whiteColor.CGColor);
     }
+    CGContextSetShadowWithColor(context, CGSizeZero, cornerRadius, [[UIColor blackColor] colorWithAlphaComponent:0.7].CGColor);
     CGContextFillPath(context);
 }
 
