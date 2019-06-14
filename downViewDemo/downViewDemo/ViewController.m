@@ -18,7 +18,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    self.view.backgroundColor = UIColor.orangeColor;
+    self.view.backgroundColor = UIColor.whiteColor;
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(click:)];
     tap.delegate = self;
     [self.view addGestureRecognizer:tap];
@@ -28,7 +28,7 @@
 {
     CGPoint point = [tap locationInView:self.view];
     
-    [downView setDownViewType:downViewLight];
+    [downView setDownViewType:downViewDark];
     [downView setTextFont:[UIFont systemFontOfSize:20]];
     [downView setRowHeight:45];
     [downView setListWidth:130];
