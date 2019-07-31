@@ -26,9 +26,9 @@
  */
 @property (nonatomic, strong) NSArray *imageArray;
 /**
- 是否为向上弹出   是：YES  不是：NO
+ 是否为默认弹出方向   是：YES  不是：NO
  */
-@property (nonatomic, assign) BOOL isUp;
+@property (nonatomic, assign) BOOL isDefaultDirection;
 @end
 /*
  控件宽度
@@ -78,6 +78,10 @@ static UIFont *font;
  控件样式
  */
 static downViewType type = downViewDark;
+/*
+ 默认方向
+ */
+static directionType direction = directionUp;
 
 @implementation downView
 
@@ -101,6 +105,10 @@ static downViewType type = downViewDark;
     type = newType;
 }
 
++ (void)setDefaultDirection:(directionType)newType {
+    direction = newType;
+}
+
 + (instancetype)showWithPoint:(CGPoint)point superView:(UIView *)superview delegate:(id)controller titleArray:(NSArray *)titleArray imageArray:(NSArray *)imageArray {
     if (superview == nil) {
         superview = UIApplication.sharedApplication.delegate.window;
@@ -118,6 +126,7 @@ static downViewType type = downViewDark;
     if (self) {
         
         halfWidth = width / 2.0;
+        //为了显示阴影，所以得加上阴影的直径
         height = rowHeight * titleArray.count + arrowHeight + cornerRadius * 2;
         _point = point;
         _titleArray = titleArray;
@@ -137,19 +146,35 @@ static downViewType type = downViewDark;
         CGFloat pointY = 0;
         
         if (superview.frame.size.height > height) {
-            if (superview.frame.size.height - (point.y + margin) < height) {
-                pointY = point.y - margin - height;
-                centerY = 1;
-                _isUp = YES;
+            if (direction == directionDown) {
+                if (superview.frame.size.height - (point.y + margin) < height) {
+                    pointY = point.y - margin - height;
+                    centerY = 1;
+                    _isDefaultDirection = YES;
+                } else {
+                    pointY = point.y + margin;
+                    centerY = 0;
+                    _isDefaultDirection = NO;
+                }
             } else {
-                pointY = point.y + margin;
-                centerY = 0;
-                _isUp = NO;
+                if (point.y + margin > height) {
+                    pointY = point.y - margin;
+                    centerY = 1;
+                    _isDefaultDirection = YES;
+                } else {
+                    pointY = point.y - margin + height;
+                    centerY = 0;
+                    _isDefaultDirection = NO;
+                }
             }
         } else {
             pointY = point.y + margin;
             centerY = 0;
-            _isUp = NO;
+            _isDefaultDirection = NO;
+        }
+        
+        if (direction == directionUp) {
+            pointY -= height;
         }
         
         if (superview.frame.size.width > width) {
@@ -171,7 +196,7 @@ static downViewType type = downViewDark;
         [self setAnchorPoint:CGPointMake(centerX / width, centerY)];
         
         CGRect rect;
-        if (_isUp) {
+        if (_isDefaultDirection) {
             rect = CGRectMake(cornerRadius, cornerRadius, width - cornerRadius * 2, height - arrowHeight - cornerRadius * 2);
         } else {
             rect = CGRectMake(cornerRadius, arrowHeight + cornerRadius, width - cornerRadius * 2, height - arrowHeight - cornerRadius * 2);
@@ -307,7 +332,7 @@ static downViewType type = downViewDark;
         pointX = _point.x - arrowMargin;
     }
     CGContextRef context = UIGraphicsGetCurrentContext();
-    if (_isUp) {
+    if (_isDefaultDirection) {
         CGContextMoveToPoint(context, pointX, height - cornerRadius);
         CGContextAddLineToPoint(context, pointX + arrowMargin, height - arrowMargin * 2 - cornerRadius);
         CGContextAddLineToPoint(context, width - cornerRadius, height - arrowMargin * 2 - cornerRadius);

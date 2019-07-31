@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class downView;
 @protocol downViewDelegate <NSObject>
 @optional
@@ -29,6 +31,11 @@
 typedef NS_ENUM(NSUInteger, downViewType) {
     downViewLight,
     downViewDark,
+};
+
+typedef NS_ENUM(NSUInteger, directionType) {
+    directionUp,
+    directionDown,
 };
 
 @interface downView : UIView
@@ -73,6 +80,13 @@ typedef NS_ENUM(NSUInteger, downViewType) {
  */
 + (void)setDownViewType:(downViewType)newType;
 /**
+ 设置默认方向
+
+ @param newType newType 方向
+ */
++ (void)setDefaultDirection:(directionType)newType;
+
+/**
  控件初始化方法
 
  @param point 弹出坐标点
@@ -83,3 +97,5 @@ typedef NS_ENUM(NSUInteger, downViewType) {
  */
 + (instancetype)showWithPoint:(CGPoint)point superView:(nullable UIView *)superview delegate:(id)controller titleArray:(nonnull NSArray *)titleArray imageArray:(nullable NSArray *)imageArray;
 @end
+
+NS_ASSUME_NONNULL_END

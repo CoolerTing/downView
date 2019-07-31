@@ -31,7 +31,7 @@
     [downView setDownViewType:downViewDark];
     [downView setTextFont:[UIFont systemFontOfSize:20]];
     [downView setRowHeight:45];
-    [downView setListWidth:130];
+    [downView setListWidth:UIScreen.mainScreen.bounds.size.width - 10];
     [downView setTextAlignment:NSTextAlignmentCenter];
     
     [downView showWithPoint:point superView:self.view delegate:self titleArray:@[@"测试1",@"测试2",@"测试3"] imageArray:@[@"more", @"more"]];
